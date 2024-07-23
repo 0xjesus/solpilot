@@ -1,14 +1,40 @@
-import {runCommand} from '@oclif/test'
-import {expect} from 'chai'
+import {Command, Flags} from '@oclif/core'
+import {Keypair} from '@solana/web3.js'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
-describe('generate-keypair', () => {
-  it('runs generate-keypair cmd', async () => {
-    const {stdout} = await runCommand('generate-keypair')
-    expect(stdout).to.contain('hello world')
-  })
+export default class GenerateKeypair extends Command {
+  static override description = 'Generate a Solana keypair and save it as one of the user\'s wallets'
 
-  it('runs generate-keypair --name oclif', async () => {
-    const {stdout} = await runCommand('generate-keypair --name oclif')
-    expect(stdout).to.contain('hello oclif')
-  })
-})
+  static override examples = [
+    '<%= config.bin %> <%= command.id %> --file <path/to/save/keypair.json>',
+  ]
+
+  static override flags = {
+    file: Flags.string({char: 'f', description: 'Path to the directory to save the keypair', required: true}),
+  }
+
+  public async run(): Promise<void> {
+    const {flags} = await this.parse(GenerateKeypair)
+    const {file} = flags
+
+    console.log('Generating keypair...')
+
+    // Generate the keypair
+    const keypair = Keypair.generate()
+
+    // Convert the keypair to JSON format
+    const keypairJson = JSON.stringify({
+      publicKey: keypair.publicKey.toBase58(),
+      secretKey: [...keypair.secretKey],
+    })
+
+    // Determine the file path for the keypair
+    const filePath = path.join(file, `keypair_${Date.now()}.json`)
+
+    // Save the keypair to the specified file
+    fs.writeFileSync(filePath, keypairJson, 'utf8')
+
+    console.log(`Keypair generated and saved to: ${filePath}`)
+  }
+}

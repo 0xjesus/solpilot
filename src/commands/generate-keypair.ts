@@ -1,30 +1,43 @@
-import {Args, Command, Flags} from '@oclif/core'
+import {Command, Flags} from '@oclif/core'
+import {Keypair} from '@solana/web3.js'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
 export default class GenerateKeypair extends Command {
-  static override args = {
-    file: Args.string({description: 'file to read'}),
-  }
-
-  static override description = 'describe the command here'
+  static override description = 'Generate one or more Solana keypairs and save them as the user\'s wallets'
 
   static override examples = [
-    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --file <path/to/save/keypair.json> --count 3',
   ]
 
   static override flags = {
-    // flag with no value (-f, --force)
-    force: Flags.boolean({char: 'f'}),
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
+    count: Flags.integer({char: 'c', default: 1, description: 'Number of keypairs to generate'}),
+    file: Flags.string({char: 'f', description: 'Path to the directory to save the keypairs', required: true}),
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(GenerateKeypair)
+    const {flags} = await this.parse(GenerateKeypair)
+    const {count, file} = flags
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /home/someguy/codebase/0xjesus/solpilot/src/commands/generate-keypair.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
+    console.log(`Generating ${count} keypair(s)...`)
+
+    for (let i = 0; i < count; i++) {
+      // Generate the keypair
+      const keypair = Keypair.generate()
+
+      // Convert the keypair to JSON format
+      const keypairJson = JSON.stringify({
+        publicKey: keypair.publicKey.toBase58(),
+        secretKey: [...keypair.secretKey],
+      })
+
+      // Determine the file path for each keypair
+      const filePath = path.join(file, `keypair_${i + 1}.json`)
+
+      // Save the keypair to the specified file
+      fs.writeFileSync(filePath, keypairJson, 'utf8')
+
+      console.log(`Keypair ${i + 1} generated and saved to: ${filePath}`)
     }
   }
 }
