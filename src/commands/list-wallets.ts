@@ -3,12 +3,7 @@ import {Connection, PublicKey} from '@solana/web3.js'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 
-const CONFIG_DIR = './wallets'
-const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json')
-
-interface Config {
-  network: string
-}
+import SolanaUtils from '../utils/solana-utils.ts'
 
 export default class ListWallets extends Command {
   static description = 'List all wallets and their data'
@@ -37,14 +32,11 @@ export default class ListWallets extends Command {
       return
     }
 
-    // Ensure configuration file exists
-    if (!fs.existsSync(CONFIG_PATH)) {
-      const defaultConfig: Config = {network: 'https://api.devnet.solana.com'}
-      fs.writeFileSync(CONFIG_PATH, JSON.stringify(defaultConfig, null, 2))
+    // Ensure configuration exists and is valid
+    const config = SolanaUtils.ensureConfigExists()
+    if (!SolanaUtils.validateConfig(config)) {
+      this.error('Invalid configuration file.')
     }
-
-    // Read configuration file
-    const config: Config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'))
 
     // Set up connection
     const connection = new Connection(config.network)

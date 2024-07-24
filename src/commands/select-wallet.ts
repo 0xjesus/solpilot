@@ -2,8 +2,9 @@ import {Command, Flags} from '@oclif/core'
 import {Connection, PublicKey} from '@solana/web3.js'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-// eslint-disable-next-line import/no-named-as-default
 import prompts from 'prompts'
+
+import SolanaUtils from '../utils/solana-utils.ts'
 
 export default class SelectWallet extends Command {
   static description = 'Select a wallet to use';
@@ -20,7 +21,14 @@ export default class SelectWallet extends Command {
     const { flags } = await this.parse(SelectWallet);
     const file = flags.file ?? './wallets';
 
-    const connection = new Connection('https://api.mainnet-beta.solana.com');
+    // Ensure configuration exists and is valid
+    const config = SolanaUtils.ensureConfigExists()
+    if (!SolanaUtils.validateConfig(config)) {
+      this.error('Invalid configuration file.')
+    }
+
+    // Set up connection
+    const connection = new Connection(config.network)
 
     // Ensure the directory exists
     if (!fs.existsSync(file)) {
