@@ -1,7 +1,14 @@
 import {Command, Flags} from '@oclif/core'
+import {Connection, PublicKey} from '@solana/web3.js'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import {PublicKey} from '@solana/web3.js'
+
+const CONFIG_DIR = './wallets'
+const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json')
+
+interface Config {
+  network: string
+}
 
 export default class ListSelectedWallet extends Command {
   static description = 'List the details of the selected wallet';
@@ -24,11 +31,29 @@ export default class ListSelectedWallet extends Command {
       this.error(`Selected wallet file does not exist: ${selectedWalletPath}`);
     }
 
+    // Ensure configuration file exists
+    if (!fs.existsSync(CONFIG_PATH)) {
+      const defaultConfig: Config = {network: 'https://api.devnet.solana.com'}
+      fs.writeFileSync(CONFIG_PATH, JSON.stringify(defaultConfig, null, 2))
+    }
+
+    // Read configuration file
+    const config: Config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'))
+
+    // Set up connection
+    const connection = new Connection(config.network)
+
+    // Read selected wallet file
     const keypairData = JSON.parse(fs.readFileSync(selectedWalletPath, 'utf8'));
     const publicKey = new PublicKey(keypairData.publicKey);
 
+    // Fetch balance
+    const balance = await connection.getBalance(publicKey);
+    const balanceInSOL = balance / 1e9;
+
     this.log(`Selected Wallet Details:`);
     this.log(`Public Key: ${publicKey.toBase58()}`);
+    this.log(`Balance: ${balanceInSOL.toFixed(2)} SOL`);
     this.log(`Secret Key: [REDACTED]`); // Do not log the secret key for security reasons
   }
 }

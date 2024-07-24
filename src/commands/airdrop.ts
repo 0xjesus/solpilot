@@ -42,7 +42,7 @@ export default class Airdrop extends Command {
         const config: Config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'))
 
         // Set up connection
-        const connection = new Connection(config.network)
+        const connection = new Connection(config.network, 'confirmed')
 
         // Prompt for address if not provided
         const address = flags.address ?? (await prompts({
@@ -67,10 +67,14 @@ export default class Airdrop extends Command {
         try {
             const publicKey = new PublicKey(address)
             const signature = await connection.requestAirdrop(publicKey, lamports)
-            await connection.confirmTransaction(signature)
+            await connection.confirmTransaction(signature, 'finalized')
             this.log(`Airdropped ${amount} SOL to ${address}`)
         } catch (error) {
-            this.error(`Failed to airdrop SOL: ${error.message}`)
+            if (error instanceof Error) {
+                this.error(`Failed to airdrop SOL: ${error.message}`)
+            } else {
+                this.error('An unknown error occurred during the airdrop request.')
+            }
         }
     }
 }
