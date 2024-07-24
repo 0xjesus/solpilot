@@ -18,7 +18,7 @@ $ npm install -g solpilot
 $ solpilot COMMAND
 running command...
 $ solpilot (--version)
-solpilot/1.2.2 linux-x64 node-v18.20.4
+solpilot/1.2.3 linux-x64 node-v18.20.4
 $ solpilot --help [COMMAND]
 USAGE
   $ solpilot COMMAND
@@ -67,7 +67,7 @@ EXAMPLES
   $ solpilot airdrop --address <wallet_address> --amount <amount>
 ```
 
-_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/airdrop.ts)_
+_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/airdrop.ts)_
 
 ## `solpilot generate-keypair`
 
@@ -87,7 +87,7 @@ EXAMPLES
   $ solpilot generate-keypair --file <path/to/save/keypair.json>
 ```
 
-_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/generate-keypair.ts)_
+_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/generate-keypair.ts)_
 
 ## `solpilot help [COMMAND]`
 
@@ -127,7 +127,7 @@ EXAMPLES
   $ solpilot list-selected-wallet
 ```
 
-_See code: [src/commands/list-selected-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/list-selected-wallet.ts)_
+_See code: [src/commands/list-selected-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/list-selected-wallet.ts)_
 
 ## `solpilot list-wallets`
 
@@ -147,7 +147,7 @@ EXAMPLES
   $ solpilot list-wallets --file <path/to/wallets>
 ```
 
-_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/list-wallets.ts)_
+_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/list-wallets.ts)_
 
 ## `solpilot plugins`
 
@@ -456,7 +456,7 @@ EXAMPLES
   $ solpilot select-wallet --file <path/to/wallets>
 ```
 
-_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/select-wallet.ts)_
+_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/select-wallet.ts)_
 
 ## `solpilot send`
 
@@ -477,7 +477,7 @@ EXAMPLES
   $ solpilot send --to <to_wallet> --amount <amount>
 ```
 
-_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/send.ts)_
+_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/send.ts)_
 
 ## `solpilot set-config`
 
@@ -497,7 +497,7 @@ EXAMPLES
   $ solpilot set-config --network devnet
 ```
 
-_See code: [src/commands/set-config.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/set-config.ts)_
+_See code: [src/commands/set-config.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/set-config.ts)_
 
 ## `solpilot show-private-key`
 
@@ -517,7 +517,7 @@ EXAMPLES
   $ solpilot show-private-key --file <path/to/wallets>
 ```
 
-_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/blob/v1.2.2/src/commands/show-private-key.ts)_
+_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/blob/v1.2.3/src/commands/show-private-key.ts)_
 <!-- commandsstop -->
 
 ---
