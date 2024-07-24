@@ -1,16 +1,9 @@
 import {Command, Flags} from '@oclif/core'
-import {Connection, LAMPORTS_PER_SOL, PublicKey} from '@solana/web3.js'
-import * as fs from 'node:fs'
-import * as path from 'node:path'
+import {execSync} from 'node:child_process'
 // eslint-disable-next-line import/no-named-as-default
 import prompts from 'prompts'
 
-const CONFIG_DIR = './wallets'
-const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json')
-
-interface Config {
-    network: string
-}
+import SolanaUtils from '../utils/solana-utils.ts'
 
 export default class Airdrop extends Command {
     static description = 'Request an airdrop to a provided Solana address'
@@ -27,29 +20,18 @@ export default class Airdrop extends Command {
     async run() {
         const {flags} = await this.parse(Airdrop)
 
-        // Ensure configuration directory exists
-        if (!fs.existsSync(CONFIG_DIR)) {
-            fs.mkdirSync(CONFIG_DIR, {recursive: true})
+        // Ensure configuration exists and is valid
+        const config = SolanaUtils.ensureConfigExists()
+        if (!SolanaUtils.validateConfig(config)) {
+            this.error('Invalid configuration file.')
         }
-
-        // Ensure configuration file exists
-        if (!fs.existsSync(CONFIG_PATH)) {
-            const defaultConfig: Config = {network: 'https://api.devnet.solana.com'}
-            fs.writeFileSync(CONFIG_PATH, JSON.stringify(defaultConfig, null, 2))
-        }
-
-        // Read configuration file
-        const config: Config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'))
-
-        // Set up connection
-        const connection = new Connection(config.network, 'confirmed')
 
         // Prompt for address if not provided
         const address = flags.address ?? (await prompts({
             message: 'Enter the Solana wallet address to receive the airdrop:',
             name: 'address',
             type: 'text',
-            validate: value => (PublicKey.isOnCurve(value) ? true : 'Invalid Solana address')
+            validate: value => value.length === 44 ? true : 'Invalid Solana address'
         })).address
 
         // Prompt for amount if not provided
@@ -60,15 +42,20 @@ export default class Airdrop extends Command {
             validate: value => value > 0 ? true : 'Amount must be greater than 0'
         })).amount
 
-        // Convert amount to lamports
-        const lamports = amount * LAMPORTS_PER_SOL
-
-        // Request airdrop
         try {
-            const publicKey = new PublicKey(address)
-            const signature = await connection.requestAirdrop(publicKey, lamports)
-            await connection.confirmTransaction(signature, 'finalized')
-            this.log(`Airdropped ${amount} SOL to ${address}`)
+            // Execute Solana CLI airdrop command
+            const result = execSync(`solana airdrop ${amount} ${address} --url ${config.network}`).toString()
+            this.log(result)
+
+            // Extract the transaction signature from the result
+            const signatureMatch = result.match(/Signature: (\w+)/)
+            if (signatureMatch) {
+                const signature = signatureMatch[1]
+                const solscanUrl = SolanaUtils.getSolscanUrl(signature)
+                this.log(`View the transaction on Solscan: ${solscanUrl}`)
+            } else {
+                this.error('Failed to extract transaction signature from the CLI output.')
+            }
         } catch (error) {
             if (error instanceof Error) {
                 this.error(`Failed to airdrop SOL: ${error.message}`)
