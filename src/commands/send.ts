@@ -1,6 +1,7 @@
 import {Command, Flags} from '@oclif/core'
 import {Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction} from '@solana/web3.js'
 import * as fs from 'node:fs'
+import * as path from 'node:path'
 import prompts from 'prompts'
 
 import SolanaUtils from '../utils/solana-utils.ts'
@@ -9,12 +10,11 @@ export default class Send extends Command {
     static description = 'Send SOL to a specified address'
 
     static examples = [
-        '<%= config.bin %> <%= command.id %> --from <from_wallet> --to <to_wallet> --amount <amount>',
+        '<%= config.bin %> <%= command.id %> --to <to_wallet> --amount <amount>',
     ]
 
     static flags = {
         amount: Flags.string({char: 'a', description: 'Amount of SOL to send', required: false}),
-        from: Flags.string({char: 'f', description: 'Path to the sender wallet file', required: false}),
         to: Flags.string({char: 't', description: 'Recipient Solana wallet address', required: false}),
     }
 
@@ -30,17 +30,15 @@ export default class Send extends Command {
         // Set up connection
         const connection = new Connection(config.network)
 
-        // Prompt for sender wallet file if not provided
-        const fromWalletPath = flags.from ?? (await prompts({
-            message: 'Enter the path to the sender wallet file:',
-            name: 'from',
-            type: 'text',
-            validate: value => fs.existsSync(value) ? true : 'Wallet file does not exist'
-        })).from
+        // Ensure the selected wallet file exists
+        const selectedWalletPath = path.join('./wallets', 'selected_wallet.json')
+        if (!fs.existsSync(selectedWalletPath)) {
+            this.error(`Selected wallet file does not exist: ${selectedWalletPath}`)
+        }
 
-        // Read sender wallet file
-    const fromWalletData = JSON.parse(fs.readFileSync(String(fromWalletPath), 'utf8')).toString()
-    const fromWallet = Keypair.fromSecretKey(Uint8Array.from(fromWalletData.secretKey))
+        // Read selected wallet file
+        const selectedWalletData = JSON.parse(fs.readFileSync(selectedWalletPath, 'utf8'))
+        const fromWallet = Keypair.fromSecretKey(Uint8Array.from(selectedWalletData.secretKey))
 
         // Prompt for recipient address if not provided
         const toAddress = flags.to ?? (await prompts({
@@ -62,12 +60,11 @@ export default class Send extends Command {
         const lamports = amount * LAMPORTS_PER_SOL
 
         // Create transaction
-        
         const transaction = new Transaction().add(
             SystemProgram.transfer({
                 fromPubkey: fromWallet.publicKey,
                 lamports,
-                toPubkey: new PublicKey(toAddress)
+                toPubkey: new PublicKey(toAddress),
             })
         )
 
