@@ -3,7 +3,7 @@ import {execSync} from 'node:child_process'
 // eslint-disable-next-line import/no-named-as-default
 import prompts from 'prompts'
 
-import SolanaUtils from '../utils/solana-utils.ts'
+import SolanaUtils from '../utils/solana-utils.js'
 
 export default class Airdrop extends Command {
     static description = 'Request an airdrop to a provided Solana address'

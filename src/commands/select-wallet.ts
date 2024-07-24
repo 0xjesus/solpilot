@@ -4,7 +4,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import prompts from 'prompts'
 
-import SolanaUtils from '../utils/solana-utils.ts'
+import SolanaUtils from '../utils/solana-utils.js'
 
 export default class SelectWallet extends Command {
   static description = 'Select a wallet to use';

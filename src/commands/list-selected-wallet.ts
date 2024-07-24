@@ -3,7 +3,7 @@ import {Connection, PublicKey} from '@solana/web3.js'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 
-import SolanaUtils from '../utils/solana-utils.ts'
+import SolanaUtils from '../utils/solana-utils.js'
 
 export default class ListSelectedWallet extends Command {
   static description = 'List the details of the selected wallet';

@@ -4,7 +4,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import prompts from 'prompts'
 
-import SolanaUtils from '../utils/solana-utils.ts'
+import SolanaUtils from '../utils/solana-utils.js'
 
 export default class Send extends Command {
     static description = 'Send SOL to a specified address'
