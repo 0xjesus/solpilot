@@ -64,7 +64,7 @@ Request an airdrop to a provided Solana address.
 solpilot airdrop --address <wallet_address> --amount <amount>
 ```
 
-_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/airdrop.ts)_
+_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/airdrop.ts)_
 
 ## `solpilot generate-keypair`
 
@@ -90,7 +90,7 @@ Generate a Solana keypair and save it as one of the user's wallets.
 solpilot generate-keypair --file ./wallets/my-keypair.json
 ```
 
-_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/generate-keypair.ts)_
+_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/generate-keypair.ts)_
 
 ## `solpilot help [COMMAND]`
 
@@ -146,7 +146,7 @@ List the details of the selected wallet.
 solpilot list-selected-wallet --file ./wallets
 ```
 
-_See code: [src/commands/list-selected-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/list-selected-wallet.ts)_
+_See code: [src/commands/list-selected-wallet.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/list-selected-wallet.ts)_
 
 ## `solpilot list-wallets`
 
@@ -172,7 +172,7 @@ List all wallets and their data.
 solpilot list-wallets --file ./wallets
 ```
 
-_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/list-wallets.ts)_
+_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/list-wallets.ts)_
 
 ## `solpilot select-wallet`
 
@@ -198,7 +198,7 @@ Select a wallet to use.
 solpilot select-wallet --file ./wallets
 ```
 
-_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/select-wallet.ts)_
+_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/select-wallet.ts)_
 
 ## `solpilot send`
 
@@ -225,7 +225,7 @@ Send SOL to a specified address.
 solpilot send --to <to_wallet> --amount <amount>
 ```
 
-_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/send.ts)_
+_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/send.ts)_
 
 ## `solpilot set-config`
 
@@ -251,7 +251,7 @@ Set the network configuration to devnet, testnet, or mainnet.
 solpilot set-config --network devnet
 ```
 
-_See code: [src/commands/set-config.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/set-config.ts)_
+_See code: [src/commands/set-config.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/set-config.ts)_
 
 ## `solpilot show-private-key`
 
@@ -277,7 +277,7 @@ Show the private key of a selected wallet.
 solpilot show-private-key --file ./wallets
 ```
 
-_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/show-private-key.ts)_
+_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/tree/main/src/commands/show-private-key.ts)_
 
 <!-- commandsstop -->
 
