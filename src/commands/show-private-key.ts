@@ -1,31 +1,58 @@
 import {Command, Flags} from '@oclif/core'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+// eslint-disable-next-line import/no-named-as-default
+import prompts from 'prompts'
 
 export default class ShowPrivateKey extends Command {
-  static override description = 'Show the private key of a selected wallet'
+  static description = 'Show the private key of a selected wallet'
 
-  static override examples = [
-    '<%= config.bin %> <%= command.id %> --file <path/to/wallets> --index 1',
+  static examples = [
+    '<%= config.bin %> <%= command.id %> --file <path/to/wallets>',
   ]
 
-  static override flags = {
-    file: Flags.string({char: 'f', description: 'Path to the directory where wallets are saved', required: true}),
-    index: Flags.integer({char: 'i', description: 'Index of the wallet to show the private key for', required: true}),
-  }
+  static flags = {
+    file: Flags.string({ char: 'f', description: 'Path to the directory where wallets are saved', required: false }),
+  };
 
-  public async run(): Promise<void> {
-    const {flags} = await this.parse(ShowPrivateKey)
-    const {file, index} = flags
+  async run() {
+    const { flags } = await this.parse(ShowPrivateKey);
+    const file = flags.file ?? './wallets';
 
-    const files = fs.readdirSync(file).filter(f => f.startsWith('keypair_') && f.endsWith('.json'))
+    // Ensure the directory exists
+    if (!fs.existsSync(file)) {
+      this.error(`Directory does not exist: ${file}`);
+    }
 
-    if (index < 1 || index > files.length) {
-      this.error(`Wallet at index ${index} does not exist.`)
+    const files = fs.readdirSync(file).filter(f => f.startsWith('keypair_') && f.endsWith('.json'));
+
+    if (files.length === 0) {
+      this.log('No wallets found.');
+      return;
+    }
+
+    const wallets = files.map((f, index) => {
+      const filePath = path.join(file, f);
+      const keypairData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      return {
+        secretKey: keypairData.secretKey,
+        title: `Wallet ${index + 1}: ${f}`,
+        value: filePath,
+      };
+    });
+
+    const response = await prompts({
+      choices: wallets,
+      message: 'Select a wallet to show the private key:',
+      name: 'selectedWallet',
+      type: 'select',
+    });
+
+    if (response.selectedWallet) {
+      const selectedWallet = wallets.find(wallet => wallet.value === response.selectedWallet);
+      this.log(`Private Key for selected wallet: ${selectedWallet?.secretKey}`);
     } else {
-      const filePath = path.join(file, files[index - 1])
-      const keypairData = JSON.parse(fs.readFileSync(filePath, 'utf8'))
-      this.log(`Private Key for wallet ${index}: ${keypairData.secretKey}`)
+      this.log('No wallet selected.');
     }
   }
 }

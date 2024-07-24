@@ -12,7 +12,9 @@
     "@oclif/plugin-help": "^6",
     "@oclif/plugin-plugins": "^5",
     "@solana/web3.js": "^1.95.1",
-    "chalk": "^5.3.0"
+    "chalk": "^5.3.0",
+    "inquirer": "^10.1.2",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
@@ -20,6 +22,7 @@
     "@types/chai": "^4",
     "@types/mocha": "^10",
     "@types/node": "^18",
+    "@types/prompts": "^2.4.9",
     "chai": "^4",
     "eslint": "^8",
     "eslint-config-oclif": "^5",
@@ -37,7 +40,8 @@
   "files": [
     "/bin",
     "/dist",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/theme.json"
   ],
   "homepage": "https://github.com/0xjesus/solpilot",
   "keywords": [
@@ -49,6 +53,7 @@
   "oclif": {
     "bin": "solpilot",
     "dirname": "solpilot",
+    "theme": "theme.json",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help",
