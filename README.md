@@ -282,5 +282,3 @@ _See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilo
 <!-- commandsstop -->
 
 ---
-
-This refactored documentation focuses on the core commands provided by SolPilot, ensuring clarity and readability for developers.
