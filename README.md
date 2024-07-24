@@ -20,7 +20,7 @@ $ npm install -g solpilot
 $ solpilot COMMAND
 running command...
 $ solpilot (--version)
-solpilot/1.0.0 linux-x64 node-v18.19.0
+solpilot/1.1.0 linux-x64 node-v18.20.4
 $ solpilot --help [COMMAND]
 USAGE
   $ solpilot COMMAND
@@ -29,9 +29,10 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`solpilot airdrop [FILE]`](#solpilot-airdrop-file)
+* [`solpilot airdrop`](#solpilot-airdrop)
 * [`solpilot generate-keypair`](#solpilot-generate-keypair)
 * [`solpilot help [COMMAND]`](#solpilot-help-command)
+* [`solpilot list-selected-wallet`](#solpilot-list-selected-wallet)
 * [`solpilot list-wallets`](#solpilot-list-wallets)
 * [`solpilot plugins`](#solpilot-plugins)
 * [`solpilot plugins add PLUGIN`](#solpilot-plugins-add-plugin)
@@ -44,32 +45,30 @@ USAGE
 * [`solpilot plugins unlink [PLUGIN]`](#solpilot-plugins-unlink-plugin)
 * [`solpilot plugins update`](#solpilot-plugins-update)
 * [`solpilot select-wallet`](#solpilot-select-wallet)
-* [`solpilot send [FILE]`](#solpilot-send-file)
+* [`solpilot send`](#solpilot-send)
+* [`solpilot set-config`](#solpilot-set-config)
 * [`solpilot show-private-key`](#solpilot-show-private-key)
 
-## `solpilot airdrop [FILE]`
+## `solpilot airdrop`
 
-describe the command here
+Request an airdrop to a provided Solana address
 
 ```
 USAGE
-  $ solpilot airdrop [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ solpilot airdrop [-a <value>] [-m <value>]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -a, --address=<value>  Solana wallet address to receive the airdrop
+  -m, --amount=<value>   Amount of SOL to airdrop
 
 DESCRIPTION
-  describe the command here
+  Request an airdrop to a provided Solana address
 
 EXAMPLES
-  $ solpilot airdrop
+  $ solpilot airdrop --address <wallet_address> --amount <amount>
 ```
 
-_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/airdrop.ts)_
+_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/airdrop.ts)_
 
 ## `solpilot generate-keypair`
 
@@ -89,7 +88,7 @@ EXAMPLES
   $ solpilot generate-keypair --file <path/to/save/keypair.json>
 ```
 
-_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/generate-keypair.ts)_
+_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/generate-keypair.ts)_
 
 ## `solpilot help [COMMAND]`
 
@@ -111,6 +110,26 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.7/src/commands/help.ts)_
 
+## `solpilot list-selected-wallet`
+
+List the details of the selected wallet
+
+```
+USAGE
+  $ solpilot list-selected-wallet [-f <value>]
+
+FLAGS
+  -f, --file=<value>  Path to the directory where the selected wallet is saved
+
+DESCRIPTION
+  List the details of the selected wallet
+
+EXAMPLES
+  $ solpilot list-selected-wallet
+```
+
+_See code: [src/commands/list-selected-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/list-selected-wallet.ts)_
+
 ## `solpilot list-wallets`
 
 List all wallets and their data
@@ -129,7 +148,7 @@ EXAMPLES
   $ solpilot list-wallets --file <path/to/wallets>
 ```
 
-_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/list-wallets.ts)_
+_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/list-wallets.ts)_
 
 ## `solpilot plugins`
 
@@ -426,44 +445,60 @@ Select a wallet to use
 
 ```
 USAGE
-  $ solpilot select-wallet -f <value> -i <value>
+  $ solpilot select-wallet [-f <value>]
 
 FLAGS
-  -f, --file=<value>   (required) Path to the directory where wallets are saved
-  -i, --index=<value>  (required) Index of the wallet to select
+  -f, --file=<value>  Path to the directory where wallets are saved
 
 DESCRIPTION
   Select a wallet to use
 
 EXAMPLES
-  $ solpilot select-wallet --file <path/to/wallets> --index 1
+  $ solpilot select-wallet --file <path/to/wallets>
 ```
 
-_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/select-wallet.ts)_
+_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/select-wallet.ts)_
 
-## `solpilot send [FILE]`
+## `solpilot send`
 
-describe the command here
+Send SOL to a specified address
 
 ```
 USAGE
-  $ solpilot send [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ solpilot send [-a <value>] [-t <value>]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -a, --amount=<value>  Amount of SOL to send
+  -t, --to=<value>      Recipient Solana wallet address
 
 DESCRIPTION
-  describe the command here
+  Send SOL to a specified address
 
 EXAMPLES
-  $ solpilot send
+  $ solpilot send --to <to_wallet> --amount <amount>
 ```
 
-_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/send.ts)_
+_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/send.ts)_
+
+## `solpilot set-config`
+
+Set the network configuration to devnet, testnet, or mainnet
+
+```
+USAGE
+  $ solpilot set-config [-n <value>]
+
+FLAGS
+  -n, --network=<value>  Network to set (devnet, testnet, mainnet)
+
+DESCRIPTION
+  Set the network configuration to devnet, testnet, or mainnet
+
+EXAMPLES
+  $ solpilot set-config --network devnet
+```
+
+_See code: [src/commands/set-config.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/set-config.ts)_
 
 ## `solpilot show-private-key`
 
@@ -471,18 +506,17 @@ Show the private key of a selected wallet
 
 ```
 USAGE
-  $ solpilot show-private-key -f <value> -i <value>
+  $ solpilot show-private-key [-f <value>]
 
 FLAGS
-  -f, --file=<value>   (required) Path to the directory where wallets are saved
-  -i, --index=<value>  (required) Index of the wallet to show the private key for
+  -f, --file=<value>  Path to the directory where wallets are saved
 
 DESCRIPTION
   Show the private key of a selected wallet
 
 EXAMPLES
-  $ solpilot show-private-key --file <path/to/wallets> --index 1
+  $ solpilot show-private-key --file <path/to/wallets>
 ```
 
-_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/show-private-key.ts)_
+_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/blob/v1.1.0/src/commands/show-private-key.ts)_
 <!-- commandsstop -->
