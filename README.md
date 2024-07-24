@@ -20,7 +20,7 @@ $ npm install -g solpilot
 $ solpilot COMMAND
 running command...
 $ solpilot (--version)
-solpilot/0.0.0 linux-x64 node-v18.19.0
+solpilot/1.0.0 linux-x64 node-v18.19.0
 $ solpilot --help [COMMAND]
 USAGE
   $ solpilot COMMAND
@@ -29,9 +29,10 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`solpilot hello PERSON`](#solpilot-hello-person)
-* [`solpilot hello world`](#solpilot-hello-world)
+* [`solpilot airdrop [FILE]`](#solpilot-airdrop-file)
+* [`solpilot generate-keypair`](#solpilot-generate-keypair)
 * [`solpilot help [COMMAND]`](#solpilot-help-command)
+* [`solpilot list-wallets`](#solpilot-list-wallets)
 * [`solpilot plugins`](#solpilot-plugins)
 * [`solpilot plugins add PLUGIN`](#solpilot-plugins-add-plugin)
 * [`solpilot plugins:inspect PLUGIN...`](#solpilot-pluginsinspect-plugin)
@@ -42,48 +43,53 @@ USAGE
 * [`solpilot plugins uninstall [PLUGIN]`](#solpilot-plugins-uninstall-plugin)
 * [`solpilot plugins unlink [PLUGIN]`](#solpilot-plugins-unlink-plugin)
 * [`solpilot plugins update`](#solpilot-plugins-update)
+* [`solpilot select-wallet`](#solpilot-select-wallet)
+* [`solpilot send [FILE]`](#solpilot-send-file)
+* [`solpilot show-private-key`](#solpilot-show-private-key)
 
-## `solpilot hello PERSON`
+## `solpilot airdrop [FILE]`
 
-Say hello
+describe the command here
 
 ```
 USAGE
-  $ solpilot hello PERSON -f <value>
+  $ solpilot airdrop [FILE] [-f] [-n <value>]
 
 ARGUMENTS
-  PERSON  Person to say hello to
+  FILE  file to read
 
 FLAGS
-  -f, --from=<value>  (required) Who is saying hello
+  -f, --force
+  -n, --name=<value>  name to print
 
 DESCRIPTION
-  Say hello
+  describe the command here
 
 EXAMPLES
-  $ solpilot hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
+  $ solpilot airdrop
 ```
 
-_See code: [src/commands/hello/index.ts](https://github.com/0xjesus/solpilot/blob/v0.0.0/src/commands/hello/index.ts)_
+_See code: [src/commands/airdrop.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/airdrop.ts)_
 
-## `solpilot hello world`
+## `solpilot generate-keypair`
 
-Say hello world
+Generate a Solana keypair and save it as one of the user's wallets
 
 ```
 USAGE
-  $ solpilot hello world
+  $ solpilot generate-keypair [-f <value>]
+
+FLAGS
+  -f, --file=<value>  Path to the directory to save the keypair
 
 DESCRIPTION
-  Say hello world
+  Generate a Solana keypair and save it as one of the user's wallets
 
 EXAMPLES
-  $ solpilot hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ solpilot generate-keypair --file <path/to/save/keypair.json>
 ```
 
-_See code: [src/commands/hello/world.ts](https://github.com/0xjesus/solpilot/blob/v0.0.0/src/commands/hello/world.ts)_
+_See code: [src/commands/generate-keypair.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/generate-keypair.ts)_
 
 ## `solpilot help [COMMAND]`
 
@@ -104,6 +110,26 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.7/src/commands/help.ts)_
+
+## `solpilot list-wallets`
+
+List all wallets and their data
+
+```
+USAGE
+  $ solpilot list-wallets [-f <value>]
+
+FLAGS
+  -f, --file=<value>  Path to the directory where wallets are saved
+
+DESCRIPTION
+  List all wallets and their data
+
+EXAMPLES
+  $ solpilot list-wallets --file <path/to/wallets>
+```
+
+_See code: [src/commands/list-wallets.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/list-wallets.ts)_
 
 ## `solpilot plugins`
 
@@ -393,4 +419,70 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.3.9/src/commands/plugins/update.ts)_
+
+## `solpilot select-wallet`
+
+Select a wallet to use
+
+```
+USAGE
+  $ solpilot select-wallet -f <value> -i <value>
+
+FLAGS
+  -f, --file=<value>   (required) Path to the directory where wallets are saved
+  -i, --index=<value>  (required) Index of the wallet to select
+
+DESCRIPTION
+  Select a wallet to use
+
+EXAMPLES
+  $ solpilot select-wallet --file <path/to/wallets> --index 1
+```
+
+_See code: [src/commands/select-wallet.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/select-wallet.ts)_
+
+## `solpilot send [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ solpilot send [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ solpilot send
+```
+
+_See code: [src/commands/send.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/send.ts)_
+
+## `solpilot show-private-key`
+
+Show the private key of a selected wallet
+
+```
+USAGE
+  $ solpilot show-private-key -f <value> -i <value>
+
+FLAGS
+  -f, --file=<value>   (required) Path to the directory where wallets are saved
+  -i, --index=<value>  (required) Index of the wallet to show the private key for
+
+DESCRIPTION
+  Show the private key of a selected wallet
+
+EXAMPLES
+  $ solpilot show-private-key --file <path/to/wallets> --index 1
+```
+
+_See code: [src/commands/show-private-key.ts](https://github.com/0xjesus/solpilot/blob/v1.0.0/src/commands/show-private-key.ts)_
 <!-- commandsstop -->
